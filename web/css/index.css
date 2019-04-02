@@ -1,0 +1,25 @@
+h1{
+    color: red;
+}
+
+h2{
+    color: #C71585;
+}
+
+a{
+    color: #C71585;
+}
+
+.b1 {
+    background: #FF69B4; /* Синий цвет фона */ 
+    color: #C71585; /* Белые буквы */ 
+    font-size: 150%; /* Размер шрифта в пунктах */
+   }
+   
+.brd {
+    border: 4px double black; /* Параметры границы */
+    background: #FFB6C1; /* Цвет фона */
+    padding: 1px; /* Поля вокруг текста */
+    width: 100px;	
+    height: 60px;
+   }

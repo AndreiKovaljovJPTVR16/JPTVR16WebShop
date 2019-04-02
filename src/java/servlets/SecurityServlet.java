@@ -1,0 +1,185 @@
+package servlets;
+
+import SecurityLogic.RoleLogic;
+import entity.Buyer;
+import entity.Role;
+import entity.User;
+import entity.UserRoles;
+import java.io.IOException;
+import javax.ejb.EJB;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import session.BuyerFacade;
+import session.RoleFacade;
+import session.UserFacade;
+import session.UserRolesFacade;
+import utils.Encription;
+import utils.PagePathLoader;
+
+/**
+ *
+ * @author Melnikov
+ */
+@WebServlet(name = "SecutityServlet", urlPatterns = {
+    "/showLogin",
+    "/login",
+    "/logout",
+    "/showRegistration",
+    "/registration",
+
+})
+public class SecurityServlet extends HttpServlet {
+    @EJB private UserFacade userFacade;
+    @EJB private BuyerFacade buyerFacade;
+    @EJB private UserRolesFacade userRolesFacade;
+    @EJB private RoleFacade roleFacade;
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        RoleLogic rl = new RoleLogic();
+        HttpSession session = request.getSession(false);
+        User regUser = null;
+        if(session != null){
+            regUser=(User) session.getAttribute("regUser");
+        }
+        String path = request.getServletPath();
+       
+        switch (path) {
+            case "/showLogin":
+                request.getRequestDispatcher(PagePathLoader.getPagePath("showLogin")).forward(request, response);
+                break;
+            case "/login":
+                String login = request.getParameter("login");
+                String password = request.getParameter("password");
+                regUser = userFacade.findUserByLogin(login);
+                if(regUser == null){
+                    request.setAttribute("info", "Неправильный логин или пароль!");
+                    request.getRequestDispatcher(PagePathLoader.getPagePath("showLogin")).forward(request, response);
+                }
+                Encription encription = new Encription();
+                String encriptPassword = encription.getEncriptionPass(password);
+                if(!encriptPassword.equals(regUser.getPassword())){
+                    request.setAttribute("info", "Неправильный логин или пароль!");
+                    request.getRequestDispatcher(PagePathLoader.getPagePath("showLogin")).forward(request, response);
+                }
+                session = request.getSession(true);
+                session.setAttribute("regUser", regUser);
+                request.setAttribute("info", "Вы вошли как "+regUser.getLogin());
+                request.setAttribute("role", rl.getRole(regUser));
+                request.getRequestDispatcher("/SessionContextServlet").forward(request, response);
+
+                break;
+            case "/logout":
+                session = request.getSession(false);
+                if(session != null){
+                    session.invalidate();
+                    request.setAttribute("info", "Вы вышли!");
+                    request.getRequestDispatcher(PagePathLoader.getPagePath("index")).forward(request, response);
+                }
+                break;
+            case "/showRegistration":
+                request.getRequestDispatcher(PagePathLoader.getPagePath("showRegistration")).forward(request, response);
+                break;
+            case "/registration":
+                String name = request.getParameter("name");
+                String surname = request.getParameter("surname");
+                String email = request.getParameter("email");
+                login = request.getParameter("login");
+                String password1 = request.getParameter("password1");
+                String password2 = request.getParameter("password2");
+                if(!password1.equals(password2)){
+                    request.setAttribute("info", "Несовпадает пароль!");
+                    request.getRequestDispatcher(PagePathLoader.getPagePath("index")).forward(request, response);
+                }
+                Buyer reader = new Buyer(email, name, surname);
+                try {
+                    buyerFacade.create(reader);
+                } catch (Exception e) {
+                    request.setAttribute("name", name);
+                    request.setAttribute("surname", surname);
+                    request.setAttribute("info", "email "+email+" уже используется");
+                    request.getRequestDispatcher("/showRegistration").forward(request, response);
+                    break;
+                }
+                
+                encription = new Encription();
+                encriptPassword = encription.getEncriptionPass(password1);
+                User user = new User(login, encriptPassword, true, reader);
+                try {
+                   userFacade.create(user); 
+                } catch (Exception e) {
+                    request.setAttribute("name", name);
+                    request.setAttribute("surname", surname);
+                    request.setAttribute("email", email);
+                    request.setAttribute("info", "логин "+login+" уже используется");
+                    request.getRequestDispatcher("/showRegistration").forward(request, response);
+                    break;
+                }
+                
+                UserRoles ur = new UserRoles();
+                ur.setUser(user);
+                Role role = roleFacade.findByName(RoleLogic.ROLE.CUSTOMER.toString());
+                ur.setRole(role);
+                userRolesFacade.create(ur);
+                request.setAttribute("info", "Регистрация успешна!");
+                request.getRequestDispatcher(PagePathLoader.getPagePath("index")).forward(request, response);
+                break;
+
+        }
+        
+    }
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    /**
+     * Returns a short description of the servlet.
+     *
+     * @return a String containing servlet description
+     */
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+}
