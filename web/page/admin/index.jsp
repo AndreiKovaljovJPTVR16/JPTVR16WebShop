@@ -1,11 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Админ</title>
-    </head>
-    <body>
+<link rel="stylesheet" href="css/index.css">
         <H1>Добро пожаловать в наш магазин</H1>
         ${info}<br>
         <a href="showLogin">Войти</a><br>
@@ -20,5 +14,4 @@
         <a href="showListProducts">Список продуктов</a><br>
         
         
-    </body>
-</html>
+ 
