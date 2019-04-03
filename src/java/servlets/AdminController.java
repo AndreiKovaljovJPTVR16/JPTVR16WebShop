@@ -27,7 +27,7 @@ import utils.PagePathLoader;
 
 /**
  *
- * @author Melnikov
+ * @author pupil
  */
 @WebServlet(name = "AdminController", loadOnStartup = 1, urlPatterns = {
     "/showChangeRole",
@@ -46,7 +46,7 @@ public class AdminController extends HttpServlet {
         if(!listUsers.isEmpty()){
             return;
         }
-        Buyer buyer = new Buyer("armaggedonhead34@gmail.com", "Andrei", "Kovaljov");
+        Buyer buyer = new Buyer("abo@gmail.com", "Andrei", "Kovaljov");
         buyerFacade.create(buyer);
         Encription encription = new Encription();
         String password = encription.getEncriptionPass("admin");
@@ -75,7 +75,7 @@ public class AdminController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
@@ -127,7 +127,6 @@ public class AdminController extends HttpServlet {
                 break;
         }        
     }
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

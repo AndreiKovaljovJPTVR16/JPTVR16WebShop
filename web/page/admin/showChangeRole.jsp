@@ -1,9 +1,14 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
+
 <html>
+    
     <head>
+               <link rel="stylesheet" href="css/index.css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Admin panel</title>
     </head>
@@ -27,7 +32,7 @@
                     <option value="${entry.key.id}">${entry.key.login}: "${entry.value.name}"</option>
                 </c:forEach>
             </select>
-            <p><input type="submit" value="Назначить"></p>
+            <p><input type="submit" value="Назначить" class="btn btn-primary btn-outline"></p>
             <a href="index">Главная страница</a><br>
         </form>
     </body>

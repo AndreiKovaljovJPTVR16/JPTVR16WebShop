@@ -6,10 +6,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Магазин</title>
     </head>
-    <body>
+    <body><div class="col-md-6 offset-md-3">
+        <div style="text-align: center; font-family: serif;">
         <h1>Выдать товар покупателю</h1>
-        ${info}<br>
-        <a href="index.jsp">Главная страница</a><br>
+        ${info}<br><hr>
+        <a href="index"><button class="btn btn-primary btn-outline">Главная страница</button></a><br><hr>
         <form action="giveProduct" method="POST">
             <select name="productId">
                 <c:forEach var="productItem" items="${listProducts}">
@@ -18,14 +19,15 @@
             </select>
             <select name="buyerId">
                 <c:forEach var="buyerItem" items="${listBuyers}">
-                    <option value="${buyerItem.id}">${buyerItem.name} ${buyerItem.surname} ${buyerItem.money}</option>
+                    <option value="${buyerItem.id}">${buyerItem.name} ${buyerItem.surname}</option>
                 </c:forEach>
             </select>
             <br>
-            Коллическтво:
-            <input type="text" name="count">
-            <br>
-            <input type="submit" value="Выдать товар">
+           
+       <br>
+            <input type="submit" class="btn btn-primary btn-outline" value="Выдать товар">
+            </div>
+        </div>
         </form>
         
     </body>

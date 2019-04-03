@@ -10,10 +10,24 @@
     </welcome-file-list>
     <jsp-config>
         <jsp-property-group>
+            <description>Шаблон для индексных страничек</description>
             <display-name>template1</display-name>
+            <url-pattern>/page/manager/showAddNewProduct.jsp</url-pattern>
+            <url-pattern>/page/manager/showUploadFile.jsp</url-pattern>
+            <url-pattern>/page/seller/showPageForGiveProduct.jsp</url-pattern>
+            <url-pattern>/showLogin.jsp</url-pattern>
+            <url-pattern>/page/customer/showListProducts.jsp</url-pattern>
+            <url-pattern>/page/admin/changePassword.jsp</url-pattern>
+            <url-pattern>/showRegistration.jsp</url-pattern>
+            <url-pattern>/page/seller/showListBuyers.jsp</url-pattern>
             <url-pattern>/page/admin/index.jsp</url-pattern>
+            <url-pattern>/page/seller/index.jsp</url-pattern>
+            <url-pattern>/page/director/showChangeRole.jsp</url-pattern>
             <url-pattern>/index.jsp</url-pattern>
+            <url-pattern>/page/director/index.jsp</url-pattern>
+            <url-pattern>/page/customer/index.jsp</url-pattern>
             <url-pattern>/page/manager/index.jsp</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
             <include-prelude>/WEB-INF/jspf/header.jspf</include-prelude>
             <include-coda>/WEB-INF/jspf/footer.jspf</include-coda>
         </jsp-property-group>

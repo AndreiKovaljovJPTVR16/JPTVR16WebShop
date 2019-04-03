@@ -6,10 +6,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Admin panel</title>
     </head>
-    <body>
+    <body><div class="col-md-6 offset-md-3">
+        <div style=" font-family: serif;">
         <h1>Страница Директора</h1>
         Список пользователей:
-        <BR>
+        <BR><hr>
         <form action="changeRole" method="POST">
             <c:forEach var="role" items="${listRoles}">
                 <c:if test="${role.id == 3}">
@@ -26,8 +27,11 @@
                     <option value="${entry.key.id}">${entry.key.login}: "${entry.value.name}"</option>
                 </c:forEach>
             </select>
-            <p><input type="submit" value="Назначить"></p>
-             <a href="index.jsp">Главная страница</a><br>
+                    <br><br>
+            <p><input type="submit" class="btn btn-primary btn-outline" value="Назначить"></p>
+            <a href="index">Главная страница</a><br>
+            </div>
+        </div>
         </form>
     </body>
 </html>

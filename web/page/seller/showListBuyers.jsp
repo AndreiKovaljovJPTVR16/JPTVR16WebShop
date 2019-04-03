@@ -6,14 +6,17 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Магазин</title>
     </head>
-    <body>
+    <body><div class="col-md-6 offset-md-3">
+        <div style=" font-family: serif;">
         <h1>Список покупателей</h1>
-        ${info}<br>
-        <a href="login">Главная страница</a><br>
+        ${info}<br><br>
+        <a href="index"><button class="btn btn-primary btn-outline">Главная страница</button></a><br><hr>
         <ul>
             <c:forEach var="buyer" items="${listBuyers}">
                 <li>${buyer.name}, ${buyer.surname}
             </c:forEach>
         </ul>
+        </div>
+        </div>
     </body>
 </html>

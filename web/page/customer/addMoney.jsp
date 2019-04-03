@@ -12,9 +12,9 @@
         <p>${info}</p>
         Вы вошли как ${username}<br>
         <form action="addMoney" method="POST">
-              Внести деньги <input type="text" name="money">
+              Внести деньги <input type="text" name="money" class="btn btn-primary btn-outline">
             <br>
-            <input type="submit" value="Добавить деньги на карту"> 
+            <input type="submit" class="btn btn-primary btn-outline" value="Добавить деньги на карту"> 
         </form>
     </body>
 </html>

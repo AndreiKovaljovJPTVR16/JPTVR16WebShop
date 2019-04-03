@@ -1,9 +1,7 @@
 package servlets;
 
-import entity.Product;
-import entity.History;
-import entity.Buyer;
 import entity.Cover;
+import entity.Product;
 import entity.User;
 import java.io.IOException;
 import java.util.Calendar;
@@ -60,7 +58,7 @@ public class ManagerController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");

@@ -18,10 +18,10 @@ import session.UserFacade;
 import session.UserRolesFacade;
 import utils.Encription;
 
+
 @WebServlet(name = "DirectorController", urlPatterns = {
     "/showAddMoney",
     "/addMoney"
-   
     
     
 })
@@ -83,7 +83,6 @@ public class DirectorController extends HttpServlet {
         
             
     }
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
