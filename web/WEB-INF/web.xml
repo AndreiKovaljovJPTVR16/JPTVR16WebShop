@@ -13,6 +13,7 @@
             <display-name>template1</display-name>
             <url-pattern>/page/admin/index.jsp</url-pattern>
             <url-pattern>/index.jsp</url-pattern>
+            <url-pattern>/page/manager/index.jsp</url-pattern>
             <include-prelude>/WEB-INF/jspf/header.jspf</include-prelude>
             <include-coda>/WEB-INF/jspf/footer.jspf</include-coda>
         </jsp-property-group>

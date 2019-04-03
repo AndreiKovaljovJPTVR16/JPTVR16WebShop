@@ -10,7 +10,7 @@
     <body>
         <h1>Список продуктов</h1>
         ${info}<br>
-        <a href="index.jsp">Главная страница</a><br>
+        <a href="index">Главная страница</a><br>
         <ul>
             <c:forEach var="product" items="${listProducts}">
                 <li>${product.name}, ${product.price}, ${product.count}

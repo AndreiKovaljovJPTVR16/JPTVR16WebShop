@@ -1,3 +1,4 @@
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -27,7 +28,7 @@
                 </c:forEach>
             </select>
             <p><input type="submit" value="Назначить"></p>
-             <a href="index.jsp">Главная страница</a><br>
+            <a href="index">Главная страница</a><br>
         </form>
     </body>
 </html>

@@ -31,6 +31,10 @@ public class Product implements Serializable{
         this.quantity = count;
     }
 
+    public Product(String price, String name, Integer integer) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
     public int getQuantity() {
         return quantity;

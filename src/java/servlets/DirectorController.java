@@ -1,18 +1,9 @@
 package servlets;
 
-import SecurityLogic.RoleLogic;
-import SecurityLogic.RoleLogic.ROLE;
-import entity.Product;
-import entity.History;
-import entity.Buyer;
-import entity.Role;
 import entity.User;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,15 +14,13 @@ import javax.servlet.http.HttpSession;
 import session.ProductFacade;
 import session.HistoryFacade;
 import session.BuyerFacade;
-import session.RoleFacade;
 import session.UserFacade;
 import session.UserRolesFacade;
 import utils.Encription;
 
-
 @WebServlet(name = "DirectorController", urlPatterns = {
-    "/showChangeRole",
-    "/changeRole",
+    "/showAddMoney",
+    "/addMoney"
    
     
     
@@ -42,7 +31,6 @@ public class DirectorController extends HttpServlet {
     @EJB private HistoryFacade historyFacade;
     @EJB private UserRolesFacade userRolesFacade;
     @EJB private UserFacade userFacade;
-    @EJB private RoleFacade roleFacade;
     
     
     
@@ -60,7 +48,6 @@ public class DirectorController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-        RoleLogic rl = new RoleLogic();
         Encription encription = new Encription();
         Calendar c = new GregorianCalendar();
         String path = request.getServletPath();
@@ -74,43 +61,29 @@ public class DirectorController extends HttpServlet {
             request.setAttribute("info", "Войдите!");
             request.getRequestDispatcher("/showLogin").forward(request, response);
         }
-        
-        if(!rl.isRole(ROLE.DIRECTOR.toString(), regUser)){
-            request.setAttribute("info", "Вы должны быть администратором!");
+        Boolean isRole = userRolesFacade.isRole("DIRECTOR", regUser);
+        if(!isRole){
+            request.setAttribute("info", "Вы должны быть директором!");
             request.getRequestDispatcher("/showLogin").forward(request, response);
-            return;
         }
-        
-        if(null != path) switch (path) {
-            case "/showChangeRole":
-                List<Role> listRoles = roleFacade.findAll();
-                List<User> listUsers = userFacade.findAll();
-                Role role;
-                Map<User,Role> mapUsers = new HashMap<>();
-                for(User user : listUsers){
-                    role=rl.getRole(user);
-                    mapUsers.put(user, role);
-                }
-                request.setAttribute("listRoles", listRoles);
-                request.setAttribute("mapUsers", mapUsers);
-                request.getRequestDispatcher("/page/admin/showChangeRole.jsp").forward(request, response);
+        switch (path) {
+            
+            case "/showAddMoney":
+                request.getRequestDispatcher("/addMoney.jsp").forward(request, response);
+            break;   
+            case "/addMoney":
+                String money=request.getParameter("money");
+                regUser.getBuyer().setMoney(regUser.getBuyer().getMoney()+new Integer(money));
+                userFacade.edit(regUser);
+                request.setAttribute("info","Денег у покупателя: " + regUser.getBuyer().getMoney());
+                request.getRequestDispatcher("/index.jsp").forward(request, response);
                 break;
-            case "/changeRole":
-                String roleId = request.getParameter("roleId");
-                String userId = request.getParameter("userId");
-                role = roleFacade.find(Long.parseLong(roleId));
-                User user = userFacade.find(Long.parseLong(userId));
-                if(!"admin".equals(user.getLogin())){
-                    rl.setRole(role,user);
-                }
-                request.getRequestDispatcher("/showChangeRole").forward(request, response);
-                break;
-        
         }
         
         
             
     }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

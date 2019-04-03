@@ -23,14 +23,15 @@ import session.RoleFacade;
 import session.UserFacade;
 import session.UserRolesFacade;
 import utils.Encription;
+import utils.PagePathLoader;
 
 /**
  *
  * @author Melnikov
  */
 @WebServlet(name = "AdminController", loadOnStartup = 1, urlPatterns = {
-    "/showAddMoney",
-    "/addMoney",
+    "/showChangeRole",
+    "/changeRole",
 
 })
 public class AdminController extends HttpServlet {
@@ -74,7 +75,7 @@ public class AdminController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
@@ -93,25 +94,40 @@ public class AdminController extends HttpServlet {
             request.getRequestDispatcher("/showLogin").forward(request, response);
             return;
         }
-        Boolean isRole = userRolesFacade.isRole("ADMINISTRATOR", regUser);
-        if(!isRole){
-            request.setAttribute("info", "Вы должны быть директором!");
+        if(!rl.isRole(ROLE.ADMINISTRATOR.toString(), regUser)){
+            request.setAttribute("info", "Вы должны быть администратором!");
             request.getRequestDispatcher("/showLogin").forward(request, response);
+            return;
         }
-        switch (path) {
-            
-            case "/showAddMoney":
-                request.getRequestDispatcher("/page/director/addMoney.jsp").forward(request, response);
-            break;   
-            case "/addMoney":
-                String money=request.getParameter("money");
-                regUser.getBuyer().setMoney(regUser.getBuyer().getMoney()+new Integer(money));
-                userFacade.edit(regUser);
-                request.setAttribute("info","Денег у покупателя: " + regUser.getBuyer().getMoney());
-                request.getRequestDispatcher("/index.jsp").forward(request, response);
+        request.setAttribute("role", rl.getRole(regUser));
+        
+        if(null != path) switch (path) {
+            case "/showChangeRole":
+                List<Role> listRoles = roleFacade.findAll();
+                List<User> listUsers = userFacade.findAll();
+                Role role;
+                Map<User,Role> mapUsers = new HashMap<>();
+                for(User user : listUsers){
+                    role=rl.getRole(user);
+                    mapUsers.put(user, role);
+                }
+                request.setAttribute("listRoles", listRoles);
+                request.setAttribute("mapUsers", mapUsers);
+                request.getRequestDispatcher(PagePathLoader.getPagePath("showChangeRole")).forward(request, response);
+                break;
+            case "/changeRole":
+                String roleId = request.getParameter("roleId");
+                String userId = request.getParameter("userId");
+                role = roleFacade.find(Long.parseLong(roleId));
+                User user = userFacade.find(Long.parseLong(userId));
+                if(!"admin".equals(user.getLogin())){
+                    rl.setRole(role,user);
+                }
+                request.getRequestDispatcher("/showChangeRole").forward(request, response);
                 break;
         }        
     }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

@@ -9,7 +9,7 @@
     <body>
         <h1>Список покупателей</h1>
         ${info}<br>
-        <a href="index.jsp">Главная страница</a><br>
+        <a href="login">Главная страница</a><br>
         <ul>
             <c:forEach var="buyer" items="${listBuyers}">
                 <li>${buyer.name}, ${buyer.surname}

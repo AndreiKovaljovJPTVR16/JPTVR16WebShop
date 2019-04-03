@@ -26,9 +26,7 @@ import utils.PagePathLoader;
 @WebServlet(name = "SellerController", urlPatterns = {
     "/showListBuyers",
     "/showPageForGiveProduct",
-    "/showPageForReturnProduct",
     "/giveProduct",
-    "/returnProduct",
     
     
     
@@ -77,8 +75,8 @@ public class SellerController extends HttpServlet {
             case "/showListBuyers":
                 List<Buyer> listBuyers = buyerFacade.findAll();
                 request.setAttribute("listBuyers", listBuyers);
-                request.setAttribute("info", "showListBuyers");
-                request.getRequestDispatcher("/page/seller/showListBuyers.jsp").forward(request, response);
+                request.setAttribute("info", "showListBuyers,привет из сервлета!");
+                request.getRequestDispatcher(PagePathLoader.getPagePath("showListBuyers")).forward(request, response);
                 break;
                 
             case "/showPageForGiveProduct":
@@ -86,59 +84,29 @@ public class SellerController extends HttpServlet {
                 listBuyers = buyerFacade.findAll();
                 request.setAttribute("listProducts", listProducts);
                 request.setAttribute("listBuyers", listBuyers);
-                request.getRequestDispatcher("/page/seller/showPageForGiveProduct.jsp").forward(request, response);
+                request.getRequestDispatcher(PagePathLoader.getPagePath("showPageForGiveProduct")).forward(request, response);
                 break;
             case "/giveProduct":
                 String productId = request.getParameter("productId");
                 String buyerId = request.getParameter("buyerId");
-                String count = request.getParameter("count");
+                if(productId == null || productId.isEmpty() || buyerId == null || buyerId.isEmpty()){
+                    request.setAttribute("info", "Вы не выбрали товар или покупателя");
+                    request.getRequestDispatcher("/showPageForGiveProduct").forward(request, response);
+                    break;
+                }
                 Product product = productFacade.find(new Long(productId));
-                Buyer buyer = buyerFacade.find(new Long(buyerId));
-                if((product.getCount()- new Integer(count))>= 0){
-                    if((buyer.getMoney()- (product.getPrice() * new Integer(count)))>=0 ){
-                        buyer.setMoney(buyer.getMoney()- new Integer(count)* product.getPrice());
-                    }else{
-                        request.setAttribute("info", "Не хватает денег!");
-                    }
+                Buyer reader = buyerFacade.find(new Long(buyerId));
+                if(product.getCount()>0){
                     product.setCount(product.getCount()-1);
                     productFacade.edit(product);
-                    History history = new History(product, buyer, c.getTime());
+                    History history = new History(product, reader, c.getTime());
                     historyFacade.create(history);
-                    request.setAttribute("info", "Продукт " + product.getName() + " продан");
+                    request.setAttribute("info", "Товар " + product.getName() + " продан");
                 }else{
-                    request.setAttribute("info", "Все продукты проданы");
+                    request.setAttribute("info", "Все товары проданы");
                 }       
-                request.getRequestDispatcher("/index.jsp").forward(request, response);
+                request.getRequestDispatcher(PagePathLoader.getPagePath("sellerIndex")).forward(request, response);
                 break;
-            case "/showPageForReturnBook":
-                List<History> listHistories = historyFacade.findGivenBooks();
-                request.setAttribute("listHistories", listHistories);
-                request.getRequestDispatcher(PagePathLoader.getPagePath("showReturnBook")).forward(request, response);
-                break;
-            case "/returnBook":
-                String historyId = request.getParameter("returnHistoryId");
-                History history = null;
-                if(historyId != null){
-                    history = historyFacade.find(new Long(historyId));
-                }
-                if(history == null){
-                    request.setAttribute("info", "Такого товара не выдавалось");
-                    request.getRequestDispatcher(PagePathLoader.getPagePath("managerIndex")).forward(request, response);
-                    return;
-                }       
-                product = history.getProduct();
-                if(product.getQuantity()>product.getCount()){
-                    product.setCount(product.getCount()+1);
-                    productFacade.edit(product);
-                    history.setDateEnd(c.getTime());
-                    historyFacade.edit(history);
-                    request.setAttribute("info", "Товар "+product.getName()+" возвращен");
-                }else{
-                    request.setAttribute("info", "Все товары уже возвращены");
-                }       
-                request.getRequestDispatcher(PagePathLoader.getPagePath("managerIndex")).forward(request, response);
-                break;
-                    
         }
             
     }

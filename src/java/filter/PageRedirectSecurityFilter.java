@@ -22,7 +22,7 @@ import SecurityLogic.RoleLogic;
 
 /**
  *
- * @author Melnikov
+ * @author pupil
  */
 @WebFilter(filterName = "PageRedirectSecurityFilter", urlPatterns = {"/page/*"})
 public class PageRedirectSecurityFilter implements Filter {

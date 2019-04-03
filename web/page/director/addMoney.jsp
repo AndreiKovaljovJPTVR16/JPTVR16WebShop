@@ -8,7 +8,7 @@
     </head>
     <body>
         <h1>Добавте деньги на свою карточку!</h1>
-        <a href="index.jsp">Главная страница</a><br>
+        <a href="index">Главная страница</a><br>
         <p>${info}</p>
         Вы вошли как ${username}<br>
         <form action="addMoney" method="POST">

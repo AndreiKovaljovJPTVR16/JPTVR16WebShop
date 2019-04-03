@@ -3,6 +3,7 @@ package servlets;
 import entity.Product;
 import entity.History;
 import entity.Buyer;
+import entity.Cover;
 import entity.User;
 import java.io.IOException;
 import java.util.Calendar;
@@ -18,8 +19,11 @@ import javax.servlet.http.HttpSession;
 import session.ProductFacade;
 import session.HistoryFacade;
 import session.BuyerFacade;
+import session.CoverFacade;
+import session.CoverProductFacade;
 import session.UserRolesFacade;
 import utils.Encription;
+import utils.PagePathLoader;
 
 /**
  *
@@ -30,6 +34,7 @@ import utils.Encription;
     "/addNewProduct",
     "/showAddNewBuyer",
     "/addNewBuyer",
+    "/showUploadFile",
     
     
     
@@ -40,6 +45,8 @@ public class ManagerController extends HttpServlet {
     @EJB private BuyerFacade buyerFacade;
     @EJB private HistoryFacade historyFacade;
     @EJB private UserRolesFacade userRolesFacade;
+    @EJB private CoverFacade coverFacade;
+    @EJB private CoverProductFacade coverProductFacade;
     
     
     
@@ -53,7 +60,7 @@ public class ManagerController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
@@ -77,7 +84,9 @@ public class ManagerController extends HttpServlet {
         }
         if(null != path) switch (path) {
             case "/showAddNewProduct":
-                request.getRequestDispatcher("/page/manager/showAddNewProduct.jsp").forward(request, response);
+                List<Cover> listCovers = coverFacade.findAll();
+                request.setAttribute("listCovers", listCovers);
+                request.getRequestDispatcher(PagePathLoader.getPagePath("showAddNewProduct")).forward(request, response);
                 break;
             case "/addNewProduct":
                 String name = request.getParameter("name");
@@ -86,13 +95,17 @@ public class ManagerController extends HttpServlet {
                 Product product = new Product(new Integer(price), name, new Integer(count));
                 productFacade.create(product);
                 request.setAttribute("info", "Продукт \""+product.getName()+"\"добавлен");
-                request.getRequestDispatcher("/index.jsp").forward(request, response);
+                request.getRequestDispatcher("/showAddNewProduct").forward(request, response);
                 break;
             case "/showAddNewBuyer":
-                request.getRequestDispatcher("/ page/manager/showAddNewBuyer.jsp").forward(request, response);
+                request.getRequestDispatcher(PagePathLoader.getPagePath("showAddNewBuyer")).forward(request, response);
                 break;
-            
-                    
+            case "/showUploadFile":
+                request.getRequestDispatcher(PagePathLoader.getPagePath("showUploadFile")).forward(request, response);
+                break;
+            default:   
+                request.setAttribute("info", "Нет такой странички");
+                request.getRequestDispatcher(PagePathLoader.getPagePath("managerIndex")).forward(request, response);         
         }
             
     }
