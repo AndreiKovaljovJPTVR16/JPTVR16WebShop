@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class UserRolesFacade extends AbstractFacade<UserRoles> {
 
-    @PersistenceContext(unitName = "Ptvr16WebShopPU")
+    @PersistenceContext(unitName = "JPTVR16WebShopPU")
     private EntityManager em;
 
     @Override

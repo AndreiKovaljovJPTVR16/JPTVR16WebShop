@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class UserFacade extends AbstractFacade<User> {
 
-    @PersistenceContext(unitName = "Ptvr16WebShopPU")
+    @PersistenceContext(unitName = "JPTVR16WebShopPU")
     private EntityManager em;
 
     @Override

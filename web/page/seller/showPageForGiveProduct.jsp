@@ -28,7 +28,6 @@
             <input type="submit" class="btn btn-primary btn-outline" value="Выдать товар">
             </div>
         </div>
-        </form>
         
     </body>
 </html>

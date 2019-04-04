@@ -17,7 +17,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class BuyerFacade extends AbstractFacade<Buyer> {
 
-    @PersistenceContext(unitName = "Ptvr16WebShopPU")
+    @PersistenceContext(unitName = "JPTVR16WebShopPU")
     private EntityManager em;
 
     @Override

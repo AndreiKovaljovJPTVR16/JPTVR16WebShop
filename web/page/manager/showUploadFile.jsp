@@ -21,7 +21,7 @@
             <input type="submit" class="btn btn-primary btn-outline" value="Загрузить">
             </div>
         </div>
-        </form>
+ 
         
     </body>
 </html>

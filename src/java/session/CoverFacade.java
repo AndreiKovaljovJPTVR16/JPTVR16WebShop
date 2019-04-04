@@ -12,12 +12,12 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author Melnikov
+ * @author pupil
  */
 @Stateless
 public class CoverFacade extends AbstractFacade<Cover> {
 
-    @PersistenceContext(unitName = "Ptvr16WebShopPU")
+    @PersistenceContext(unitName = "JPTVR16WebShopPU")
     private EntityManager em;
 
     @Override

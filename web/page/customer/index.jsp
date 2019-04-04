@@ -8,7 +8,7 @@
     <body><div class="col-md-6 offset-md-3">
         <div style="text-align: center; font-family: serif;">
         <H1>Добро пожаловать в наш магазин</H1>
-        <div style="text-align: center; color:  #3F92D2; font-family: serif;">
+        <div style="text-align: center; color:  #red; font-family: serif;">
             <h3>${info}<br></h3>
         </div>
         <div style="text-align: left; font-family: serif;">

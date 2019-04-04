@@ -7,15 +7,15 @@
     </head>
     <body><div class="col-md-6 offset-md-3">
         <div style="text-align: center; font-family: serif;">
-            <strong><H1>Добро пожаловать в наш магазин!</H1></strong>
+            <H1>Добро пожаловать в наш магазин!</H1>
         </div>
-        <div style="text-align: center; color:  #3F92D2; font-family: serif;">
+        <div style="text-align: center; color:  red; font-family: serif;">
             <h3>${info}</h3><br><hr>
     </div>
     <div style="text-align: left; font-family: serif;">
         <a href="logout"><button class="btn btn-primary btn-outline">Выйти</button></a><br><br>
         <a href="showChangePassword"><button class="btn btn-primary btn-outline">Изменить пароль</button></a><br>
-        <br><hr>
+        <br>
         <a href="showChangeRole">Изменить роль</a><br>
        
         <a href="showRegistration">Добавить покупателя</a><br>

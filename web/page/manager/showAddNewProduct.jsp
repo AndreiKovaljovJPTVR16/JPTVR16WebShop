@@ -30,6 +30,5 @@
             <input type="submit" class="btn btn-primary btn-outline" value="Добавить продукт">
             </div>
         </div>
-        </form>
     </body>
 </html>
